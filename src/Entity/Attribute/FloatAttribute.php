@@ -29,16 +29,6 @@ class FloatAttribute extends Attribute
     private $value;
 
     /**
-     * Attribute constructor
-     *
-     * @param float $value
-     */
-    public function __construct(float $value = null)
-    {
-        $this->value = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getValue() : float
@@ -52,7 +42,7 @@ class FloatAttribute extends Attribute
      * @param float $value
      * @return $this|self
      */
-    public function setValue(float $value) : self
+    public function setValue(float $value = null) : self
     {
         $this->value = $value;
 

@@ -36,38 +36,22 @@ class AttributeTest extends PHPUnit_Framework_TestCase
         parent::setUp();
     }
 
-    /**
-     * Test Attribute Construct
-     *
-     * @group attribute
-     * @dataProvider attributeTypeProvider
-     *
-     * @param string $attribute
-     * @param mixed $value
-     */
-    public function testConstruct(string $attribute, $value)
+    /** @group attribute */
+    public function testConstruct()
     {
         /** @var Attribute $attribute */
-        $attribute = new $attribute($value);
+        $attribute = $this->getMockForAbstractClass(Attribute::class, ['foo']);
 
-        $this->assertAttributeSame($value, 'value', $attribute);
+        $this->assertAttributeSame('foo', 'name', $attribute);
     }
 
-    /**
-     * Test getting Attribute Value
-     *
-     * @group attribute
-     * @dataProvider attributeTypeProvider
-     *
-     * @param string $attribute
-     * @param mixed $value
-     */
-    public function testGetValue(string $attribute, $value)
+    /** @group attribute */
+    public function testGetName()
     {
         /** @var Attribute $attribute */
-        $attribute = new $attribute($value);
+        $attribute = $this->getMockForAbstractClass(Attribute::class, ['foo']);
 
-        $this->assertSame($value, $attribute->getValue());
+        $this->assertSame('foo', $attribute->getName());
     }
 
     /**
@@ -82,10 +66,29 @@ class AttributeTest extends PHPUnit_Framework_TestCase
     public function testSetValue(string $attribute, $value)
     {
         /** @var Attribute $attribute */
-        $attribute = new $attribute();
+        $attribute = new $attribute('foo');
         $attribute->setValue($value);
 
         $this->assertAttributeSame($value, 'value', $attribute);
+        $this->assertAttributeSame('foo', 'name', $attribute);
+    }
+
+    /**
+     * Test getting Attribute Value
+     *
+     * @group attribute
+     * @dataProvider attributeTypeProvider
+     *
+     * @param string $attribute
+     * @param mixed $value
+     */
+    public function testGetValue(string $attribute, $value)
+    {
+        /** @var Attribute $attribute */
+        $attribute = new $attribute('foo');
+        $attribute->setValue($value);
+
+        $this->assertSame($value, $attribute->getValue());
         $this->assertSame($value, $attribute->getValue());
     }
 
@@ -102,7 +105,8 @@ class AttributeTest extends PHPUnit_Framework_TestCase
     public function testPersist(string $attribute, $value, $expected)
     {
         /** @var Attribute $attribute */
-        $attribute = new $attribute($value);
+        $attribute = new $attribute('foo');
+        $attribute->setValue($value);
 
         $this->em->persist($attribute);
         $this->em->flush();
@@ -113,6 +117,7 @@ class AttributeTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotSame($attribute, $freshAttribute);
         $this->assertEquals($expected, $freshAttribute->getValue());
+        $this->assertEquals('foo', $freshAttribute->getName());
 
         $this->assertAttributeInstanceOf(Uuid::class, 'id', $freshAttribute);
         $this->assertAttributeInstanceOf(\DateTime::class, 'createdAt', $freshAttribute);
@@ -131,10 +136,12 @@ class AttributeTest extends PHPUnit_Framework_TestCase
      */
     public function testCascadePersist(string $attribute, $value, $expected)
     {
-        $entity = new Entity([
-            /** @var Attribute $attribute */
-            $attribute = new $attribute($value),
-        ]);
+        /** @var Attribute $attribute */
+        $attribute = new $attribute('foo');
+        $attribute->setValue($value);
+
+        $entity = new Entity();
+        $entity->add($attribute);
 
         $this->em->persist($entity);
         $this->em->flush();
@@ -143,10 +150,11 @@ class AttributeTest extends PHPUnit_Framework_TestCase
 
         /** @var Entity $freshEntity */
         $freshEntity = $this->em->getRepository(Entity::class)->find($entity->getId());
-        $freshAttribute = $freshEntity->getAttributes()->first();
+        $freshAttribute = $freshEntity->get('foo');
 
         $this->assertNotSame($attribute, $freshAttribute);
         $this->assertEquals($expected, $freshAttribute->getValue());
+        $this->assertEquals('foo', $freshAttribute->getName());
 
         $this->assertAttributeInstanceOf(Uuid::class, 'id', $freshAttribute);
         $this->assertAttributeInstanceOf(\DateTime::class, 'createdAt', $freshAttribute);

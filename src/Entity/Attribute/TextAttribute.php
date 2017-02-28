@@ -29,16 +29,6 @@ class TextAttribute extends Attribute
     private $value;
 
     /**
-     * Attribute constructor
-     *
-     * @param string $value
-     */
-    public function __construct(string $value = null)
-    {
-        $this->value = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getValue() : string
@@ -52,7 +42,7 @@ class TextAttribute extends Attribute
      * @param string $value
      * @return $this|self
      */
-    public function setValue(string $value) : self
+    public function setValue(string $value = null) : self
     {
         $this->value = $value;
 

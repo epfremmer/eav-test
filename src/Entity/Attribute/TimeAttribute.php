@@ -29,16 +29,6 @@ class TimeAttribute extends Attribute
     private $value;
 
     /**
-     * Attribute constructor
-     *
-     * @param \DateTime $value
-     */
-    public function __construct(\DateTime $value = null)
-    {
-        $this->value = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getValue() : \DateTime
@@ -52,7 +42,7 @@ class TimeAttribute extends Attribute
      * @param \DateTime $value
      * @return $this|self
      */
-    public function setValue(\DateTime $value) : self
+    public function setValue(\DateTime $value = null) : self
     {
         $this->value = $value;
 

@@ -29,16 +29,6 @@ class BigIntAttribute extends Attribute
     private $value;
 
     /**
-     * Attribute constructor
-     *
-     * @param int $value
-     */
-    public function __construct(int $value = null)
-    {
-        $this->value = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getValue() : int
@@ -52,7 +42,7 @@ class BigIntAttribute extends Attribute
      * @param int $value
      * @return $this|self
      */
-    public function setValue(int $value) : self
+    public function setValue(int $value = null) : self
     {
         $this->value = $value;
 

@@ -50,18 +50,20 @@ class EntityTest extends PHPUnit_Framework_TestCase
     }
 
     /** @group entity */
-    public function testConstructWithArgs()
+    public function testAdd()
     {
-        $entity = new Entity([
-            $attribute = new StringAttribute(),
-        ]);
+        $entity = new Entity();
+        $entity->add($attribute = new StringAttribute('foo'));
 
-        $this->assertAttributeEquals(null, 'id', $entity);
-        $this->assertAttributeEquals(null, 'createdAt', $entity);
-        $this->assertAttributeEquals(null, 'updatedAt', $entity);
-        $this->assertAttributeInstanceOf(Collection::class, 'attributes', $entity);
-        $this->assertAttributeCount(1, 'attributes', $entity);
         $this->assertAttributeContains($attribute, 'attributes', $entity);
+    }
+
+    public function testGet()
+    {
+        $entity = new Entity();
+        $entity->add($attribute = new StringAttribute('foo'));
+
+        $this->assertSame($attribute, $entity->get('foo'));
     }
 
     /** @group entity */
@@ -84,23 +86,10 @@ class EntityTest extends PHPUnit_Framework_TestCase
     }
 
     /** @group entity */
-    public function testGetAttributes()
-    {
-        $entity = new Entity([
-            $attribute = new StringAttribute(),
-        ]);
-
-        $this->assertInstanceOf(Collection::class, $entity->getAttributes());
-        $this->assertCount(1, $entity->getAttributes());
-        $this->assertContains($attribute, $entity->getAttributes());
-    }
-
-    /** @group entity */
     public function testPersistWithAttribute()
     {
-        $entity = new Entity([
-            $attribute = new StringAttribute(),
-        ]);
+        $entity = new Entity();
+        $entity->add($attribute = new StringAttribute('foo'));
 
         $this->em->persist($entity);
         $this->em->flush();
@@ -112,6 +101,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
         $this->assertNotSame($entity, $freshEntity);
         $this->assertAttributeContainsOnly(StringAttribute::class, 'attributes', $freshEntity);
         $this->assertAttributeCount(1, 'attributes', $freshEntity);
+        $this->assertNotEmpty($freshEntity->get('foo'));
 
         $this->assertAttributeInstanceOf(Uuid::class, 'id', $attribute);
         $this->assertAttributeInstanceOf(\DateTime::class, 'createdAt', $attribute);
@@ -121,10 +111,9 @@ class EntityTest extends PHPUnit_Framework_TestCase
     /** @group entity */
     public function testPersistWithAttributes()
     {
-        $entity = new Entity([
-            $attribute1 = new StringAttribute('foo'),
-            $attribute2 = new StringAttribute('bar'),
-        ]);
+        $entity = new Entity();
+        $entity->add($attribute1 = new StringAttribute('foo'));
+        $entity->add($attribute2 = new StringAttribute('bar'));
 
         $this->em->persist($entity);
         $this->em->flush();
@@ -136,6 +125,8 @@ class EntityTest extends PHPUnit_Framework_TestCase
         $this->assertNotSame($entity, $freshEntity);
         $this->assertAttributeContainsOnly(StringAttribute::class, 'attributes', $freshEntity);
         $this->assertAttributeCount(2, 'attributes', $freshEntity);
+        $this->assertNotEmpty($freshEntity->get('foo'));
+        $this->assertNotEmpty($freshEntity->get('bar'));
 
         $this->assertAttributeInstanceOf(Uuid::class, 'id', $attribute1);
         $this->assertAttributeInstanceOf(\DateTime::class, 'createdAt', $attribute1);

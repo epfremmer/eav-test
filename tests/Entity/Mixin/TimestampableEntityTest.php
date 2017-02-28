@@ -38,22 +38,23 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
     public function testCreatedAt()
     {
         $entity = new Entity();
+        $attribute = new StringAttribute('foo');
 
         $this->assertEmpty($entity->getCreatedAt());
 
         $entity->setCreatedAt($epoch = new \DateTime('@0'));
 
-        // create attribute
+        // create entity
         $this->em->persist($entity);
         $this->em->flush();
 
         $this->assertInstanceOf(\DateTime::class, $entity->getCreatedAt());
         $this->assertEquals($epoch, $entity->getCreatedAt());
 
-        // modify entity
-        $entity->getAttributes()->add(new StringAttribute('foo'));
+        // modify entity attributes
+        $entity->add($attribute);
 
-        // update attribute
+        // update entity
         $this->em->persist($entity);
         $this->em->flush();
         $this->em->clear(Entity::class);
@@ -69,6 +70,7 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
     public function testUpdatedAt()
     {
         $entity = new Entity();
+        $attribute = new StringAttribute('foo');
 
         $this->assertEmpty($entity->getUpdatedAt());
 
@@ -81,8 +83,8 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(\DateTime::class, $entity->getUpdatedAt());
         $this->assertEquals($epoch, $entity->getUpdatedAt());
 
-        // modify entity
-        $entity->getAttributes()->add(new StringAttribute('foo'));
+        // modify entity attributes
+        $entity->add($attribute);
 
         // update entity
         $this->em->persist($entity);
@@ -93,6 +95,6 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
         $freshEntity = $this->em->getRepository(Entity::class)->find($entity->getId());
 
         $this->assertNotSame($epoch, $freshEntity->getUpdatedAt());
-        $this->assertEquals(new \DateTime(), $freshEntity->getUpdatedAt(), '', 1.0);
+        $this->assertLessThan($freshEntity->getUpdatedAt(), $epoch);
     }
 }

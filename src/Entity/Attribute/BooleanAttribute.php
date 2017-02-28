@@ -29,16 +29,6 @@ class BooleanAttribute extends Attribute
     private $value;
 
     /**
-     * Attribute constructor
-     *
-     * @param bool $value
-     */
-    public function __construct(bool $value = null)
-    {
-        $this->value = $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getValue() : bool
@@ -52,7 +42,7 @@ class BooleanAttribute extends Attribute
      * @param bool $value
      * @return $this|self
      */
-    public function setValue(bool $value) : self
+    public function setValue(bool $value = null) : self
     {
         $this->value = $value;
 
