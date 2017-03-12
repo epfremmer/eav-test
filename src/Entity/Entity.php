@@ -60,15 +60,15 @@ class Entity
      * ```
      *
      * @param string $name
-     * @return mixed|null
+     * @return Attribute|null
      */
-    public function get(string $name) : Attribute
+    public function get(string $name) : ?Attribute
     {
         return $this->attributes->get($name);
     }
 
     /**
-     * Add New Attribute
+     * Set Attribute
      *
      * Details:
      *
@@ -86,12 +86,41 @@ class Entity
      * ```
      *
      * @param Attribute $attribute
-     * @return Entity
+     * @return Attribute
      */
-    public function add(Attribute $attribute) : self
+    public function set(Attribute $attribute) : Attribute
     {
         $this->attributes->set($attribute->getName(), $attribute);
 
-        return $this;
+        return $attribute;
+    }
+
+    /**
+     * Test is Attribute exists
+     *
+     * Details:
+     *
+     *  - Returns false if attribute key does not exist
+     *
+     * Examples:
+     *
+     * ```php
+     * if (!$entity->has('field_name')) {
+     *     // handle missing attribute
+     * }
+     *
+     * if ($entity->has('field_name')) {
+     *     $attribute = $entity->get('field_name');
+     *
+     *     // do something with attribute
+     * }
+     * ```
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function has($name) : bool
+    {
+        return $this->attributes->containsKey($name);
     }
 }

@@ -18,7 +18,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  *
- * @method $this setValue(mixed $value = null) - Subclasses *must* implement this method (allow value type hinting)
+ * @method $this setValue($value = null) - Subclasses *must* implement this method (allow value type hinting)
  *
  * @package Epfremme\Eav\Entity
  */

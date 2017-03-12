@@ -50,18 +50,19 @@ class EntityTest extends PHPUnit_Framework_TestCase
     }
 
     /** @group entity */
-    public function testAdd()
+    public function testSet()
     {
         $entity = new Entity();
-        $entity->add($attribute = new StringAttribute('foo'));
+        $return = $entity->set($attribute = new StringAttribute('foo'));
 
+        $this->assertSame($return, $attribute);
         $this->assertAttributeContains($attribute, 'attributes', $entity);
     }
 
     public function testGet()
     {
         $entity = new Entity();
-        $entity->add($attribute = new StringAttribute('foo'));
+        $entity->set($attribute = new StringAttribute('foo'));
 
         $this->assertSame($attribute, $entity->get('foo'));
     }
@@ -89,7 +90,7 @@ class EntityTest extends PHPUnit_Framework_TestCase
     public function testPersistWithAttribute()
     {
         $entity = new Entity();
-        $entity->add($attribute = new StringAttribute('foo'));
+        $entity->set($attribute = new StringAttribute('foo'));
 
         $this->em->persist($entity);
         $this->em->flush();
@@ -112,8 +113,8 @@ class EntityTest extends PHPUnit_Framework_TestCase
     public function testPersistWithAttributes()
     {
         $entity = new Entity();
-        $entity->add($attribute1 = new StringAttribute('foo'));
-        $entity->add($attribute2 = new StringAttribute('bar'));
+        $entity->set($attribute1 = new StringAttribute('foo'));
+        $entity->set($attribute2 = new StringAttribute('bar'));
 
         $this->em->persist($entity);
         $this->em->flush();

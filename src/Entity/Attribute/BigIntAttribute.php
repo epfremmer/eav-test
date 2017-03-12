@@ -31,7 +31,7 @@ class BigIntAttribute extends Attribute
     /**
      * {@inheritdoc}
      */
-    public function getValue() : int
+    public function getValue() : ?int
     {
         return $this->value;
     }

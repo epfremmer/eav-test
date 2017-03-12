@@ -31,7 +31,7 @@ class DateAttribute extends Attribute
     /**
      * {@inheritdoc}
      */
-    public function getValue() : \DateTime
+    public function getValue() : ?\DateTime
     {
         return $this->value;
     }

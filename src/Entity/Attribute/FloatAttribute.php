@@ -31,7 +31,7 @@ class FloatAttribute extends Attribute
     /**
      * {@inheritdoc}
      */
-    public function getValue() : float
+    public function getValue() : ?float
     {
         return $this->value;
     }

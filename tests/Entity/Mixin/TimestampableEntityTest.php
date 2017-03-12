@@ -52,7 +52,7 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($epoch, $entity->getCreatedAt());
 
         // modify entity attributes
-        $entity->add($attribute);
+        $entity->set($attribute);
 
         // update entity
         $this->em->persist($entity);
@@ -84,7 +84,7 @@ class TimestampableEntityTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($epoch, $entity->getUpdatedAt());
 
         // modify entity attributes
-        $entity->add($attribute);
+        $entity->set($attribute);
 
         // update entity
         $this->em->persist($entity);

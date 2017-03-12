@@ -141,7 +141,7 @@ class AttributeTest extends PHPUnit_Framework_TestCase
         $attribute->setValue($value);
 
         $entity = new Entity();
-        $entity->add($attribute);
+        $entity->set($attribute);
 
         $this->em->persist($entity);
         $this->em->flush();

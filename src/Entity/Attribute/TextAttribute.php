@@ -31,7 +31,7 @@ class TextAttribute extends Attribute
     /**
      * {@inheritdoc}
      */
-    public function getValue() : string
+    public function getValue() : ?string
     {
         return $this->value;
     }

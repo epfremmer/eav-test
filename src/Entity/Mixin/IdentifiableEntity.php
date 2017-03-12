@@ -7,6 +7,7 @@
 namespace Epfremme\Eav\Entity\Mixin;
 
 use Ramsey\Uuid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class IdentifiableEntity
